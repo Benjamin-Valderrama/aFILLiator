@@ -10,12 +10,15 @@
 #' fetch_record(pmid)
 fetch_record <- function(pmid){
 
+        stopifnot(is.character(pmid), length(pmid) == 1)
 
         rentrez::entrez_fetch(db = "pubmed", id = pmid, rettype = "xml") |>
                 XML::xmlParse() |>
                 XML::getNodeSet(path = "//PubmedArticleSet")
 
 }
+
+
 
 #' Extract affiliations from a XML object
 #'
@@ -51,6 +54,7 @@ get_affiliations <- function(pubmed_record, last_name){
 }
 
 
+
 #' Get authors name, affiliations and PMID from where affiliation was gathered
 #'
 #' @param fore_name A character vector of one element with the name(s) of the author.
@@ -63,6 +67,10 @@ get_affiliations <- function(pubmed_record, last_name){
 #' aFILLiator(fore_name = "John F", last_name = "Cryan")
 aFILLiator <- function(fore_name = "Benjamin",
                         last_name = "Valderrama"){
+
+
+        stopifnot(is.character(fore_name), length(fore_name) == 1,
+                  is.character(last_name), length(last_name) == 1)
 
 
         author <- paste(fore_name, last_name)
