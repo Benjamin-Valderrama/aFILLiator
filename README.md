@@ -42,13 +42,10 @@ aFILLiator(fore_name = "Benjamin", last_name = "Valderrama")
 #> 1            38525261
 ```
 
-aFILLiator also supports working with multiple authors as long as they
-are provided as data frame with two columns, one with forenames
-`fore_names` and the other with last names `last_name`.
-
+In addition, aFILLiator can be used to gather information from multiple authors. To do so, a data frame with two columns can be generated and imported into your R session.
+Below you can see an example of such a data frame. Notice the two columns, one with the forenames (`fore_name`), and other with the last names (`last_name`) of each author.
+ 
 ``` r
-
-library(aFILLiator)
 
 # Example data frame
 test_df
@@ -56,6 +53,13 @@ test_df
 #> 1    Thomaz Bastiaanssen
 #> 2  Benjamin   Valderrama
 #> 3    John F        Cryan
+```
+
+The data frame with the names can then be transformed into an object of class `list`, and we can use the function `aFILLiator` to loop over matching pairs of `fore_name`s and `last_name`s.
+
+``` r
+
+library(aFILLiator)
 
 # convert to a list to loop over it
 names_list <- test_df |> 
@@ -68,6 +72,7 @@ affiliations_df <- mapply(aFILLiator, names_list$fore_name, names_list$last_name
         # make the output a data frame again
         sapply(X = _, FUN = unlist) |>
         data.frame()
+
 #> [1] "Thomaz Bastiaanssen"
 #> [1] "Entrez search result with 23 hits"
 #> [1] "Extracting affiliations from the article : 38852762 (PMID)"
@@ -81,6 +86,7 @@ affiliations_df <- mapply(aFILLiator, names_list$fore_name, names_list$last_name
 
 # see the output
 affiliations_df
+
 #>              name    last_name
 #> Thomaz     Thomaz Bastiaanssen
 #> Benjamin Benjamin   Valderrama
