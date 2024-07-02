@@ -1,0 +1,77 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# aFILLiator
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+aFILLiator is a small collection of scripts that find the affiliation of an author by looking at the affiliation they used in their last paper available in [PubMed](https://pubmed.ncbi.nlm.nih.gov/). The goal is to help authors to find the affiliations of their collaborators, thus speeding up the writing process of this tedious (but necessary) section.
+
+## Installation
+
+You can install the development version of aFILLiator from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("Benjamin-Valderrama/aFILLiator")
+```
+
+## Example
+
+This is a basic example which shows you how aFILLiator works...
+
+```{r minimal example}
+library(aFILLiator)
+
+# we call the main function of aFILLiator
+aFILLiator(fore_name = "Benjamin", last_name = "Valderrama")
+
+```
+
+aFILLiator also supports working with multiple authors as long as they are provided as data frame with two columns, one with forenames `fore_names` and the other with last names `last_name`.
+
+```{r preparing data frame, include=FALSE}
+
+test_df <- data.frame(fore_name = c("Thomaz", "Benjamin", "John F"),
+                      last_name = c("Bastiaanssen", "Valderrama" , "Cryan"))
+
+
+```
+
+```{r data frame example}
+
+library(aFILLiator)
+
+# Example data frame
+test_df
+
+# convert to a list to loop over it
+names_list <- test_df |> 
+        as.list()
+
+# loop over the matching forenames and last names using the aFILLliator function
+affiliations_df <- mapply(aFILLiator, names_list$fore_name, names_list$last_name) |>
+        t() |>
+        data.frame() |>
+        # make the output a data frame again
+        sapply(X = _, FUN = unlist) |>
+        data.frame()
+
+
+# see the output
+affiliations_df
+
+```
