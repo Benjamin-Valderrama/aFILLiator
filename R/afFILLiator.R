@@ -28,8 +28,8 @@ fetch_record <- function(pmid){
 #' @examples
 #' pmid <- 38852762
 #' record <- fetch_record(pmid)
-#' get_affilliations(record, "Cryan")
-get_affilliations <- function(pubmed_record, last_name){
+#' get_affiliations(record, "Cryan")
+get_affiliations <- function(pubmed_record, last_name){
 
 
         lastname_list <- pubmed_record |>
@@ -60,8 +60,8 @@ get_affilliations <- function(pubmed_record, last_name){
 #' @export
 #'
 #' @examples
-#' afFILLiator(fore_name = "John F", last_name = "Cryan")
-afFILLiator <- function(fore_name = "Benjamin",
+#' aFILLiator(fore_name = "John F", last_name = "Cryan")
+aFILLiator <- function(fore_name = "Benjamin",
                         last_name = "Valderrama"){
 
 
@@ -76,32 +76,32 @@ afFILLiator <- function(fore_name = "Benjamin",
 
         if (search$count == 0){
                 print("No hits found for that author name")
-                affilliations <- "Author not found"; pmid <- "Author not found"
+                affiliations <- "Author not found"; pmid <- "Author not found"
         }
 
         else{
                 print(paste("Entrez search result with", hits, "hits"))
                 for(pmid in search$ids){
 
-                        print(paste("Extracting affilliations from the article :", pmid, "(PMID)"))
+                        print(paste("Extracting affiliations from the article :", pmid, "(PMID)"))
 
                         record <- fetch_record(pmid = pmid)
-                        affilliations <- get_affilliations(pubmed_record = record, last_name = last_name)
+                        affiliations <- get_affiliations(pubmed_record = record, last_name = last_name)
 
-                        # If an affilliation was found, break the loop
-                        if(!is.null(affilliations)){break}
+                        # If an affiliation was found, break the loop
+                        if(!is.null(affiliations)){break}
                         # otherwise look at the following publication
                 }
 
-                # If no affilliation was found, then assign a value
-                if(is.null(affilliations)){affilliations <- "unknown"; pmid <- NA}
+                # If no affiliation was found, then assign a value
+                if(is.null(affiliations)){affiliations <- "unknown"; pmid <- NA}
         }
 
         # put the information together into one dataframe
-        affilliations_df <- data.frame(name = fore_name,
+        affiliations_df <- data.frame(name = fore_name,
                                        last_name = last_name,
-                                       affilliations = affilliations,
+                                       affiliations = affiliations,
                                        extracted_from_pmid = pmid)
-        return(affilliations_df)
+        return(affiliations_df)
 }
 
