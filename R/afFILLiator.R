@@ -1,4 +1,15 @@
+#' Get a XML object with the article information from a PMID
+#'
+#' @param pmid a numeric vactor of one element with the PMID.
+#'
+#' @return an XML document with the article information associated to that PMID.
+#' @export
+#'
+#' @examples
+#' pmid <- 38852762
+#' fetch_record(pmid)
 fetch_record <- function(pmid){
+
 
         rentrez::entrez_fetch(db = "pubmed", id = pmid, rettype = "xml") |>
                 XML::xmlParse() |>
@@ -6,7 +17,20 @@ fetch_record <- function(pmid){
 
 }
 
+#' Extract affiliations from a XML object
+#'
+#' @param pubmed_record an XML object with the information of an article.
+#' @param last_name A character vector of one element with the lastname of the author.
+#'
+#' @return A character vector of one element with the affiliations of the author with the last name provided.
+#' @export
+#'
+#' @examples
+#' pmid <- 38852762
+#' record <- fetch_record(pmid)
+#' get_affilliations(record, "Cryan")
 get_affilliations <- function(pubmed_record, last_name){
+
 
         lastname_list <- pubmed_record |>
                 lapply(X = _, FUN = XML::xpathSApply, "//Author/LastName", XML::xmlValue) |>
@@ -27,9 +51,19 @@ get_affilliations <- function(pubmed_record, last_name){
 }
 
 
-# main function
+#' Get authors name, affiliations and PMID from where affiliation was gathered
+#'
+#' @param fore_name A character vector of one element with the name(s) of the author.
+#' @param last_name A character vector of one element with the lastname of the author.
+#'
+#' @return A dataframe with author name, lastname, affiliations and the PMID of the publication where the information was gather from.
+#' @export
+#'
+#' @examples
+#' afFILLiator(fore_name = "John F", last_name = "Cryan")
 afFILLiator <- function(fore_name = "Benjamin",
                         last_name = "Valderrama"){
+
 
         author <- paste(fore_name, last_name)
         print(author)
