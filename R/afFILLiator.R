@@ -10,8 +10,6 @@
 #' fetch_record(pmid)
 fetch_record <- function(pmid){
 
-        stopifnot(is.character(pmid), length(pmid) == 1)
-
         rentrez::entrez_fetch(db = "pubmed", id = pmid, rettype = "xml") |>
                 XML::xmlParse() |>
                 XML::getNodeSet(path = "//PubmedArticleSet")
